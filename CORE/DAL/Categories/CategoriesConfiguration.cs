@@ -15,7 +15,8 @@ namespace CORE.DAL
             builder.ToTable("Categories");
             builder.HasKey(i => i.Id);
             builder.Property(i => i.Id).IsRequired().ValueGeneratedOnAdd();
-            builder.Property(i => i.Name).IsRequired();
+            builder.Property(i => i.Name).IsRequired(); 
+            builder.Property(i => i.ParentCategoryId).IsRequired(false);
         }
     }
 }

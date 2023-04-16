@@ -25,7 +25,7 @@ namespace Task_3.Controllers
         }
         public async Task<IActionResult> Add()
         {
-           
+            ViewBag.Category = await CategoryService.GetAllCategory();
             return View();
         }
         [HttpPost]
@@ -37,6 +37,12 @@ namespace Task_3.Controllers
                 Name = Item.Name,
                 Price= Item.Price,
             });
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await ProductService.Delete(id);
             return RedirectToAction("Index");
         }
     }

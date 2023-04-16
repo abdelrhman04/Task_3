@@ -36,11 +36,7 @@ namespace BLL.Services
         {
             return await uow._Products.Update(product);
         }
-        public async Task< IEnumerable<SelectListItem>> GetAllCategory()
-        {
-            var Categories = (await uow._Categories.GetAll()).Select(i => new SelectListItem(i.Name, i.Id.ToString()));
-            return Categories;
-        }
+        
 
     }
 }

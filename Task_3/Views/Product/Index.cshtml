@@ -10,20 +10,19 @@
                 <th scope="col">Name</th>
                 <th scope="col">Price</th>
                 <th scope="col" >Delete</th>
-                <th scope="col" >Update</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                @foreach (var Product in (List<Products>)ViewBag.Products)
+             @foreach (var Product in (List<Products>)ViewBag.Products)
                 {
+            <tr>
+               
                     <th scope="row">@Product.Id</th>
                     <td>@Product.Name</td>
                     <td>@Product.Price</td>
-                <td ><button class="btn btn-danger " >Delete</button></td>
-                <td > <button class=" btn btn-primary " >Update</button></td>
-                }
+                    <td><a class="btn btn-danger " asp-controller="Product" asp-action="Delete" asp-route-id="@Product.Id">Delete</a></td>
             </tr>
+            }
         </tbody>
     </table>
 </div>

@@ -39,8 +39,12 @@ namespace BLL.Repositoories
             return category;
         }
 
-        public async Task<List<T>> GetAll()
+        public async Task<List<T>> GetAll(Expression<Func<T, object>>? includes = null)
         {
+            if(includes != null)
+            {
+                return await _context.Set<T>().Include(includes).ToListAsync(new CancellationToken());
+            }
             return await _context.Set<T>().ToListAsync(new CancellationToken());
         }
 

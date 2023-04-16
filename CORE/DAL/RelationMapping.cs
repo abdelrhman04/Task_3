@@ -16,7 +16,11 @@ namespace CORE.DAL
           HasOne(i => i.Category)
           .WithMany(i => i.Products)
           .HasForeignKey(i => i.CategoryId)
-          .IsRequired().OnDelete(DeleteBehavior.NoAction);
+          .IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Categories>()
+        .HasOne(c => c.ParentCategory)
+        .WithMany(c => c.ChildCategories)
+        .HasForeignKey(c => c.ParentCategoryId).OnDelete(DeleteBehavior.SetNull);
 
         }
     }

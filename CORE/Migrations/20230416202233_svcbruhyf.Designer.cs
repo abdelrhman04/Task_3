@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CORE.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20230414195427_first_schme")]
-    partial class first_schme
+    [Migration("20230416202233_svcbruhyf")]
+    partial class svcbruhyf
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,7 +36,12 @@ namespace CORE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ParentCategoryId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categories", (string)null);
                 });
@@ -264,12 +269,22 @@ namespace CORE.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CORE.DAL.Categories", b =>
+                {
+                    b.HasOne("CORE.DAL.Categories", "ParentCategory")
+                        .WithMany("ChildCategories")
+                        .HasForeignKey("ParentCategoryId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("ParentCategory");
+                });
+
             modelBuilder.Entity("CORE.DAL.Products", b =>
                 {
                     b.HasOne("CORE.DAL.Categories", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -328,6 +343,8 @@ namespace CORE.Migrations
 
             modelBuilder.Entity("CORE.DAL.Categories", b =>
                 {
+                    b.Navigation("ChildCategories");
+
                     b.Navigation("Products");
                 });
 #pragma warning restore 612, 618

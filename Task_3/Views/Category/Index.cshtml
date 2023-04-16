@@ -10,21 +10,17 @@
                 <th scope="col">Name</th>
                
                 <th scope="col">Delete</th>
-                <th scope="col">Update</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                @foreach (var Category in (List<Categories>)ViewBag.Category)
+            @foreach (var Category in (List<Categories>)ViewBag.Category)
                 {
-                    <th scope="row">@Category.Id</th>
-                    <td>@Category.Name</td>
-                <td><button class="btn btn-danger ">Delete</button></td>
-                <td> <button class=" btn btn-primary ">Update</button></td>
-                    
-                }
-               
+            <tr>
+                <th scope="row">@Category.Id</th>
+                <td>@Category.Name</td>
+                    <td><a class="btn btn-danger " asp-controller="Category" asp-action="Delete" asp-route-id="@Category.Id">Delete</a></td>
             </tr>
+            }
         </tbody>
     </table>
 </div>

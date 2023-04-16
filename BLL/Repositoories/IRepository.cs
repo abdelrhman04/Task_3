@@ -9,7 +9,7 @@ namespace BLL.Repositoories
 {
     public interface IRepository<T>
     {
-        Task<List<T>> GetAll();
+        Task<List<T>> GetAll(Expression<Func<T, object>>? includes = null);
         Task<T> GetById(Expression<Func<T, bool>>? value = null);
         Task<T> Add(T category);
         Task<T> Update(T category);

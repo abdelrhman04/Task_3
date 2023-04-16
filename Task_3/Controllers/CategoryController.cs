@@ -15,12 +15,12 @@ namespace Task_3.Controllers
         }
         public async Task< IActionResult> Index()
         {
-            ViewBag.Category = await CategoryService.GetAll(null);
+            ViewBag.Category = await CategoryService.GetAll();
             return View();
         }
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
-
+            ViewBag.Category = await CategoryService.GetAllCategory();
             return View();
         }
         [HttpPost]
@@ -28,9 +28,20 @@ namespace Task_3.Controllers
         {
             var result = await CategoryService.Add(new Categories
             {
-                
+                ParentCategoryId=Item.CategoryId,
                 Name = Item.Name,
             });
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> Reusion()
+        {
+            ViewBag.Category = await CategoryService.GetChildCategories(null);
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+             await CategoryService.Delete(id);
             return RedirectToAction("Index");
         }
     }

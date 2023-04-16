@@ -10,6 +10,9 @@ namespace CORE.DAL
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int? ParentCategoryId { get; set; }
+        public virtual Categories? ParentCategory { get; set; }
+        public virtual ICollection<Categories>? ChildCategories { get; set; }
         public ICollection<Products> Products { get; set; }
     }
 }

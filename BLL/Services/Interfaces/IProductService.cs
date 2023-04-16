@@ -10,7 +10,7 @@ namespace BLL.Services
 {
     public interface IProductService
     {
-        Task<IEnumerable<SelectListItem>> GetAllCategory();
+        
         Task<List<Products>> GetAll();
         Task<Products> GetById(int id);
         Task<Products> Add(Products product);

@@ -1,4 +1,5 @@
 ﻿using CORE.DAL;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,33 +18,45 @@ namespace BLL.Services
             return await uow._Categories.Add(category);
         }
 
-        public async Task<Categories> Delete(int id)
+        public async Task Delete(int id)
         {
-            return await uow._Categories.Delete(c => c.Id == id);
-        }
 
-        public async Task<List<Categories>> GetAll(int? Category_Id)
-        {
-            var childCategories = new List<Categories>();
-
-            if (Category_Id == null)
+            
+            foreach (var category in (await uow._Categories.GetAll(x => x.ChildCategories)).Where(c => c.ParentCategoryId == id || c.Id==id))
             {
                
-                foreach (var category in await uow._Categories.GetAll())
+                if(category.ChildCategories != null)
                 {
+                    foreach (var Childcategory in category.ChildCategories)
+                    {
+                        await Delete(Childcategory.Id);
+                    }
+                    
 
-                    childCategories = await GetAll(category.Id);
                 }
+                //childCategories.Add(category);
+                await uow._Categories.Delete(c => c.Id == category.Id);
             }
-            else
+           
+
+           // return await uow._Categories.Delete(c => c.Id == id || c.ParentCategoryId == id);
+        }
+        public async Task<List<Categories>> GetAll()
+        {
+            return await uow._Categories.GetAll();
+        }
+        public async Task< List<Categories>> GetChildCategories(int? parentId)
+        {
+            var childCategories = new List<Categories>();
+            foreach (var category in (await uow._Categories.GetAll(x => x.ChildCategories)).Where(c => c.ParentCategoryId == parentId))
             {
-                childCategories.Add(await uow._Categories.GetById(x => x.Id == Category_Id));
+                category.ChildCategories =await GetChildCategories(category.Id);
+                childCategories.Add(category);
             }
-            
             return childCategories;
         }
-          
-        
+
+
 
         public async Task<Categories> GetById(int id)
         {
@@ -53,6 +66,11 @@ namespace BLL.Services
         public async Task<Categories> Update(Categories category)
         {
             return await uow._Categories.Update(category);
+        }
+        public async Task<IEnumerable<SelectListItem>> GetAllCategory()
+        {
+            var Categories = (await uow._Categories.GetAll()).Select(i => new SelectListItem(i.Name, i.Id.ToString()));
+            return Categories;
         }
     }
 }
