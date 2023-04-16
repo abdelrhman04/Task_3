@@ -1,0 +1,45 @@
+﻿
+@model LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+
+<form id="loginForm" >
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="text" class="form-control" id="Email" name="Email" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+<script>
+    $(function () {
+        $('#loginForm').submit(function (event) {
+            event.preventDefault();
+            var formData = $(this).serializeArray();
+            
+            $.ajax({
+                type: 'POST',
+                url: '/User/Login',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    Email: formData[0].value,
+                    Password: formData[1].value
+                }),
+                success: function (result) {
+                    console.log(result)
+                    localStorage.setItem('token', result);
+                    window.location.href = '/Home';
+                },
+                error: function (xhr, status, error) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>

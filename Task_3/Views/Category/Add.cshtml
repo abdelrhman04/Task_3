@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Category";
+}
+@model CategoryModel
+<form method="post" asp-controller="Category" asp-action="Add">
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name</label>
+        <input type="text" class="form-control" name="Name" id="Name" >
+    </div>
+    <button type="submit" class="btn d-block mx-auto w-25 btn-primary">Add</button>
+</form>
